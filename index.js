@@ -8,7 +8,7 @@ const myCustomArgv = minimist(process.argv.slice(2), {
 });
 
 function readHelp() {
-  const helpMD = fs.readFileSync("help.md", "utf8");
+  const helpMD = fs.readFileSync("README.md", "utf8");
   echo(renderMarkdown(helpMD));
 }
 
