@@ -2,6 +2,8 @@
 import { echo, fs, fetch, minimist } from "zx";
 import renderMarkdown from "./markdown-render.js";
 
+const cliVersion = "1.0.3"
+
 const myCustomArgv = minimist(process.argv.slice(2), {
   string: ["group_id", "version", "snyk_token","starting_after"],
   boolean: ["help", "get_all_orgs_group","version","v"],
@@ -53,8 +55,7 @@ async function getAllOrgsGroup() {
     getAllOrgsGroup();
   }
   else if (myCustomArgv.version || myCustomArgv.v){
-    const cliVersion = JSON.parse(fs.readFileSync("./package.json",'utf8'));
-    echo(`${cliVersion.version}`)
+    echo(`${cliVersion}`)
   }
    else {
     echo(`invalid command!`);
