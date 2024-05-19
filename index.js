@@ -4,7 +4,7 @@ import renderMarkdown from "./markdown-render.js";
 
 const myCustomArgv = minimist(process.argv.slice(2), {
   string: ["group_id", "version", "snyk_token","starting_after"],
-  boolean: ["help", "get_all_orgs_group"],
+  boolean: ["help", "get_all_orgs_group","version","v"],
 });
 
 function readHelp() {
@@ -51,7 +51,12 @@ async function getAllOrgsGroup() {
     readHelp();
   } else if (myCustomArgv.get_all_orgs_group) {
     getAllOrgsGroup();
-  } else {
+  }
+  else if (myCustomArgv.version || myCustomArgv.v){
+    const cliVersion = JSON.parse(fs.readFileSync("./package.json",'utf8'));
+    echo(`${cliVersion.version}`)
+  }
+   else {
     echo(`invalid command!`);
   }
 })();

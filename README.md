@@ -6,6 +6,10 @@ snyk-rest-cli helps you to call the REST API and provide you functionalities tha
 
 `npm i snyk-rest-cli -g`
 
+Check if you have install correctly by running:
+
+`snyk-rest-cli -v`
+
 # Functions
 
 ## GET API  
@@ -21,9 +25,15 @@ snyk-rest-cli helps you to call the REST API and provide you functionalities tha
 
 ## Available commands
 
-To learn more about each snyk-rest-cli CLI command, use the `--help` option`.
+### `snyk-rest-cli --help`
+
+Give you the list of commands available for this CLI
 
 **Note:** The help on the docs site is the same as the `--help` in the CLI.
+
+### `snyk-rest-cli -v or --version`
+
+Give you the version of the CLI
 
 ### `snyk-rest-cli --get_all_orgs_group`
 
