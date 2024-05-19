@@ -1,0 +1,27 @@
+{
+  "name": "snyk-rest-cli",
+  "version": "1.0.0",
+  "description": "A CLI that uses snyk REST API",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "snyk-rest-cli": "./index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Shoreasg/snyk-rest-cli.git"
+  },
+  "author": "Shoreasg",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/Shoreasg/snyk-rest-cli/issues"
+  },
+  "homepage": "https://github.com/Shoreasg/snyk-rest-cli#readme",
+  "dependencies": {
+    "marked": "^12.0.2",
+    "zx": "^8.1.0"
+  }
+}
