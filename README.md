@@ -2,6 +2,10 @@
 
 snyk-rest-cli helps you to call the REST API and provide you functionalities that the REST API doesn't provide.
 
+# How to install
+
+`npm i snyk-rest-cli -g`
+
 # Functions
 
 ## GET API  
