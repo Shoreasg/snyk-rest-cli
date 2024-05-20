@@ -4,7 +4,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import renderMarkdown from "./markdown-render.js";
 
-const cliVersion = "1.0.4"
+const cliVersion = "1.0.5"
 
 const myCustomArgv = minimist(process.argv.slice(2), {
   string: ["group_id", "api_version", "snyk_token","starting_after"],
