@@ -20,7 +20,7 @@ Check if you have install correctly by running:
 ## How to get started
 
 1. Input --snyk_token=<`SnykToken/ServiceToken`>
-2. Input --version=<`The requested version of the endpoint to process the request`>
+2. Input --api_version=<`The requested version of the endpoint to process the request`>
 3. Look at the available commands below and add the required flags for the command to work
 
 ## Available commands
