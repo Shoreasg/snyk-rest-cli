@@ -15,13 +15,13 @@ Check if you have install correctly by running:
 ## GET API  
 
 1. GET all organizations in a group
+2. GET all integrations for all organizations in a group.
 
 
 ## How to get started
 
-1. Input --snyk_token=<`SnykToken/ServiceToken`>
-2. Input --api_version=<`The requested version of the endpoint to process the request`>
-3. Look at the available commands below and add the required flags for the command to work
+1. Every command requires these 2 flag --snyk_token=<`SnykToken/ServiceToken`> and  --api_version=<`The requested version of the endpoint to process the request`>
+2. Look at the available commands below and add the required flags for the command to work
 
 ## Available commands
 
@@ -35,14 +35,21 @@ Give you the list of commands available for this CLI
 
 Give you the version of the CLI
 
-### `snyk-rest-cli --get_all_orgs_group`
+# `snyk-rest-cli --get_all_orgs_group`
 
 Get all orgs for the specify group.
 
-# Required flags
+## Required flags
 
 1. `--group_id`: Your group id
 
-# optional flags
+# `snyk-rest-cli --get_all_integrations_org`
 
-1. `--starting_after`: Return the page of results immediately after this cursor
+Get all integrations for all orgs in the specified group.
+## Required flags
+
+1. `--group_id`: Your group id
+
+## optional flags
+
+1. `--source_types`: if you want to check if all of the orgs in a group have integrated a certain integration, use this flag. (can only specify 1 type of integration!)
