@@ -1,3 +1,12 @@
+# Note
+
+This is an open-source community project. This code is developed in the open with input from the community through issues and PRs.
+
+1. As a community project, all requests, feedback, and issues are managed through Github issues.
+2. Snyk techincal support will not handle cases related to this tool and will redirect you back to this process
+3. Pull Requests are encouraged to submit changes, which the author will review.
+
+
 # CLI help
 
 snyk-rest-cli helps you to call the REST API and provide you functionalities that the REST API doesn't provide.
@@ -16,6 +25,10 @@ Check if you have install correctly by running:
 
 1. GET all organizations in a group
 2. GET all integrations for all organizations in a group.
+
+## DELETE API
+
+1. Delete empty targets
 
 
 ## How to get started
@@ -53,3 +66,11 @@ Get all integrations for all orgs in the specified group.
 ## optional flags
 
 1. `--source_types`: if you want to check if all of the orgs in a group have integrated a certain integration, use this flag. (can only specify 1 type of integration!)
+
+# `snyk-rest-cli --delete_empty_targets`
+
+Get all targets in a group, check if the target is empty, if true, delete it.
+
+## Required flags
+
+1. `--group_id`: Your group id
