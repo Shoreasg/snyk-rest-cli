@@ -36,5 +36,6 @@ export const myCustomArgv = minimist(process.argv.slice(2), {
     "version",
     "v",
     "get_all_integrations_org",
+    "delete_empty_targets"
   ],
 });

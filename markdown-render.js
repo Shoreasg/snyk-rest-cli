@@ -114,6 +114,10 @@ const renderer = {
       text,
     )}\n`;
   },
+  image(href, title, text) {
+    // Ignore images by returning an empty string
+    return '';
+  },
 };
 
 marked.use({ renderer });
