@@ -5,6 +5,7 @@ This is an open-source community project. This code is developed in the open wit
 1. As a community project, all requests, feedback, and issues are managed through Github issues.
 2. Snyk techincal support will not handle cases related to this tool and will redirect you back to this process
 3. Pull Requests are encouraged to submit changes, which the author will review.
+4. This repository is not affiliated with Snyk and its a community side project. Any issues, please look for the author of this repository.
 
 
 # CLI help
