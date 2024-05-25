@@ -75,3 +75,12 @@ Get all targets in a group, check if the target is empty, if true, delete it.
 ## Required flags
 
 1. `--group_id`: Your group id
+
+# `snyk-rest-cli --update_snyk_code_orgs`
+
+Get all organizations in a group and check their snyk code settings, set all to enable / disable
+
+## Required flags
+
+1. `--group_id`: Your group id
+2. `--sast_enabled`: Enable / Disable Snyk Code

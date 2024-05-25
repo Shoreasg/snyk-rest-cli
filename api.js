@@ -211,11 +211,7 @@ export async function deleteEmptyTargets() {
               const data = await response.json();
 
               if (data.data.length === 0) {
-                echo(
-                 `${chalk.redBright(
-                    target.id
-                  )} is empty. Deleting it...`
-                );
+                echo(`${chalk.redBright(target.id)} is empty. Deleting it...`);
 
                 //call delete api here
                 try {
@@ -232,7 +228,7 @@ export async function deleteEmptyTargets() {
                     .then(async (response) => {
                       if (response.status == 204) {
                         echo(
-                         `${chalk.greenBright(
+                          `${chalk.greenBright(
                             target.id
                           )} is sucessfully deleted`
                         );
@@ -278,6 +274,167 @@ export async function deleteEmptyTargets() {
           echo(`${chalk.redBright(`No targets for this Organization!`)}`);
         }
       }
+    }
+  } catch (error) {
+    echo(`Fetch error: ${error.message}`);
+    console.error(error);
+  }
+}
+
+export async function updateSnykCode() {
+  try {
+    if (myCustomArgv.sast_enabled === "true" || myCustomArgv.sast_enabled === "false") {
+      await getAllOrgsGroup();
+
+      if (orgIds && orgIds.length > 0) {
+        for (const orgId of orgIds) {
+          const response = await fetch(
+            `https://api.snyk.io/rest/orgs/${orgId}/settings/sast?version=${myCustomArgv.api_version}`,
+            {
+              method: "GET",
+              headers: {
+                accept: "application/vnd.api+json",
+                authorization: `TOKEN ${myCustomArgv.snyk_token}`,
+              },
+            }
+          );
+          if (!response.ok) {
+            const errorText = await response.json();
+            echo(
+              chalk.red(
+                `HTTP error! Status: ${
+                  response.status
+                }, Response: ${JSON.stringify(errorText)}`
+              )
+            );
+            return;
+          }
+          const data = await response.json();
+          echo(
+            `${chalk.yellowBright(`Organization ID:`)}`,
+            chalk.greenBright(orgId),
+            `has Snyk Code ${
+              data.data.attributes.sast_enabled === true
+                ? chalk.yellowBright("Enabled")
+                : chalk.redBright("Disabled")
+            }`
+          );
+          if (myCustomArgv.sast_enabled === "true") {
+            if (data.data.attributes.sast_enabled === false) {
+              echo(
+                chalk.greenBright(
+                  `${orgId} has snyk code disabled. Enabling it...`
+                )
+              );
+              try {
+                await fetch(
+                  `https://api.snyk.io/rest/orgs/${orgId}/settings/sast?version=${myCustomArgv.api_version}`,
+                  {
+                    method: "PATCH",
+                    headers: {
+                      accept: "application/vnd.api+json",
+                      authorization: `TOKEN ${myCustomArgv.snyk_token}`,
+                      'Content-Type': 'application/vnd.api+json'
+                    },
+                    body: JSON.stringify({
+                      data: {
+                        attributes: {
+                          sast_enabled: true,
+                        },
+                        id: `${orgId}`,
+                        type: "string",
+                      },
+                    }),
+                  }
+                ).then(async (response) => {
+                    if (response.status == 201) {
+                      echo(
+                        `${chalk.greenBright(
+                          orgId
+                        )} is sucessfully updated. Snyk Code is Enabled!`
+                      );
+                    } else {
+                      chalk.redBright(
+                        `We have trouble updating ${orgId} snyk code to Enabled`
+                      );
+                    }
+                  })
+                  .catch((error) => {
+                    echo(chalk.red(`Update error: ${error.message}`));
+                    console.error(error);
+                  });
+              } catch (error) {
+                echo(chalk.red(`Update error: ${error.message}`));
+                console.error(error);
+              }
+            } else {
+              echo(
+                chalk.yellowBright(
+                  `Organization ID: ${orgId} has Snyk Code Enabled! Skipping Org!`
+                )
+              );
+            }
+          } else{
+            if(data.data.attributes.sast_enabled === true){
+              echo(
+                chalk.greenBright(
+                  `${orgId} has Snyk Code Enabled. Disabling it...`
+                )
+              );
+              try {
+                await fetch(
+                  `https://api.snyk.io/rest/orgs/${orgId}/settings/sast?version=${myCustomArgv.api_version}`,
+                  {
+                    method: "PATCH",
+                    headers: {
+                      accept: "application/vnd.api+json",
+                      authorization: `TOKEN ${myCustomArgv.snyk_token}`,
+                      'Content-Type': 'application/vnd.api+json'
+                    },
+                    body: JSON.stringify({
+                      data: {
+                        attributes: {
+                          sast_enabled: false,
+                        },
+                        id: `${orgId}`,
+                        type: "string",
+                      },
+                    }),
+                  }
+                ).then(async (response) => {
+                    if (response.status == 201) {
+                      echo(
+                        `${chalk.greenBright(
+                          orgId
+                        )} is sucessfully updated. Snyk Code is Disabled!`
+                      );
+                    } else {
+                      chalk.redBright(
+                        `We have trouble updating ${orgId} Snyk Code to Disabled`
+                      );
+                    }
+                  })
+                  .catch((error) => {
+                    echo(chalk.red(`Update error: ${error.message}`));
+                    console.error(error);
+                  });
+              } catch (error) {
+                echo(chalk.red(`Update error: ${error.message}`));
+                console.error(error);
+              }
+            } echo(
+              chalk.yellowBright(
+                `Organization ID: ${orgId} has Snyk Code Disabled! Skipping Org!`
+              )
+            );
+           
+
+
+          }
+        }
+      }
+    } else {
+      echo(chalk.red(`Unable to call API due to missing --sast_enabled`));
     }
   } catch (error) {
     echo(`Fetch error: ${error.message}`);
