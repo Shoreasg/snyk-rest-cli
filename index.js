@@ -3,7 +3,7 @@ import { echo } from "zx";
 import { myCustomArgv, readHelp } from "./helper.js";
 import { deleteEmptyTargets, getAllIntegrationsInOrg, getAllOrgsGroup, updateSnykCode } from "./api.js";
 
-const cliVersion = "4.0.2";
+const cliVersion = "4.0.3";
 
 
 (async () => {
