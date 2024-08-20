@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 import { echo } from "zx";
 import { myCustomArgv, readHelp } from "./helper.js";
-import { deleteEmptyTargets, getAllIntegrationsInOrg, getAllOrgsGroup, updateSnykCode } from "./api.js";
+import { deleteEmptyTargets, getAllIntegrationsInOrg, getAllOrgsGroup, getIssuesCount, updateSnykCode } from "./api.js";
 
-const cliVersion = "4.0.3";
+const cliVersion = "5.0.0";
 
 
 (async () => {
@@ -19,6 +19,8 @@ const cliVersion = "4.0.3";
     deleteEmptyTargets();
   } else if (myCustomArgv.update_snyk_code_orgs){
     updateSnykCode();
+  } else if (myCustomArgv.get_all_org_issues){
+    getIssuesCount();
   }
    else {
     echo(`invalid command!`);
