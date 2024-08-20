@@ -26,6 +26,7 @@ Check if you have install correctly by running:
 
 1. GET all organizations in a group
 2. GET all integrations for all organizations in a group.
+3. GET all issue count for all organizations in a group.
 
 ## DELETE API
 
@@ -84,3 +85,11 @@ Get all organizations in a group and check their snyk code settings, set all to 
 
 1. `--group_id`: Your group id
 2. `--sast_enabled`: Enable / Disable Snyk Code
+
+# `snyk-rest-cli --get_all_org_issues`
+
+Get all issues counts for all organizations in a group for all severity.
+
+## Required flags
+
+1. `--group_id`: Your group id
