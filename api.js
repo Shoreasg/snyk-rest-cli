@@ -3,8 +3,9 @@ import {
   paginationForDeleteEmptyTargetsInOrg,
   paginationForGetAllIntegrationsInOrg,
   paginationForGetAllOrgsGroup,
+  paginationForGetIssuesCount,
 } from "./pagination.js";
-import { echo, chalk } from "zx";
+import { echo, chalk, spinner } from "zx";
 let orgIds = [];
 
 export async function getAllIntegrationsInOrg() {
@@ -283,7 +284,10 @@ export async function deleteEmptyTargets() {
 
 export async function updateSnykCode() {
   try {
-    if (myCustomArgv.sast_enabled === "true" || myCustomArgv.sast_enabled === "false") {
+    if (
+      myCustomArgv.sast_enabled === "true" ||
+      myCustomArgv.sast_enabled === "false"
+    ) {
       await getAllOrgsGroup();
 
       if (orgIds && orgIds.length > 0) {
@@ -334,7 +338,7 @@ export async function updateSnykCode() {
                     headers: {
                       accept: "application/vnd.api+json",
                       authorization: `TOKEN ${myCustomArgv.snyk_token}`,
-                      'Content-Type': 'application/vnd.api+json'
+                      "Content-Type": "application/vnd.api+json",
                     },
                     body: JSON.stringify({
                       data: {
@@ -346,7 +350,8 @@ export async function updateSnykCode() {
                       },
                     }),
                   }
-                ).then(async (response) => {
+                )
+                  .then(async (response) => {
                     if (response.status == 201) {
                       echo(
                         `${chalk.greenBright(
@@ -374,8 +379,8 @@ export async function updateSnykCode() {
                 )
               );
             }
-          } else{
-            if(data.data.attributes.sast_enabled === true){
+          } else {
+            if (data.data.attributes.sast_enabled === true) {
               echo(
                 chalk.greenBright(
                   `${orgId} has Snyk Code Enabled. Disabling it...`
@@ -389,7 +394,7 @@ export async function updateSnykCode() {
                     headers: {
                       accept: "application/vnd.api+json",
                       authorization: `TOKEN ${myCustomArgv.snyk_token}`,
-                      'Content-Type': 'application/vnd.api+json'
+                      "Content-Type": "application/vnd.api+json",
                     },
                     body: JSON.stringify({
                       data: {
@@ -401,7 +406,8 @@ export async function updateSnykCode() {
                       },
                     }),
                   }
-                ).then(async (response) => {
+                )
+                  .then(async (response) => {
                     if (response.status == 201) {
                       echo(
                         `${chalk.greenBright(
@@ -422,19 +428,101 @@ export async function updateSnykCode() {
                 echo(chalk.red(`Update error: ${error.message}`));
                 console.error(error);
               }
-            } echo(
+            }
+            echo(
               chalk.yellowBright(
                 `Organization ID: ${orgId} has Snyk Code Disabled! Skipping Org!`
               )
             );
-           
-
-
           }
         }
       }
     } else {
       echo(chalk.red(`Unable to call API due to missing --sast_enabled`));
+    }
+  } catch (error) {
+    echo(`Fetch error: ${error.message}`);
+    console.error(error);
+  }
+}
+
+export async function getIssuesCount() {
+  try {
+    await getAllOrgsGroup();
+
+    if (orgIds && orgIds.length > 0) {
+      await Promise.all(
+        orgIds.map(async (orgId) => {
+          const response = await fetch(
+            `https://api.snyk.io/rest/orgs/${orgId}/issues?version=${myCustomArgv.api_version}&limit=100`,
+            {
+              method: "GET",
+              headers: {
+                accept: "application/vnd.api",
+                authorization: `Token ${myCustomArgv.snyk_token}`,
+              },
+            }
+          );
+
+          if (!response.ok) {
+            const errorText = await response.json();
+            echo(
+              chalk.red(
+                `HTTP error! Status: ${response.status}, Response: ${JSON.stringify(errorText)}`
+              )
+            );
+            return;
+          }
+
+          const data = await response.json();
+          const issues = data.data;
+
+          let lowIssueCount = 0;
+          let mediumIssueCount = 0;
+          let highIssueCount = 0;
+          let criticalIssueCount = 0;
+
+          await (spinner(chalk.red(`Calculating number of issues for org ${orgId}`),async()=>{
+            for (const issue of issues) {
+              switch (issue.attributes.effective_severity_level) {
+                case "low":
+                  lowIssueCount++;
+                  break;
+                case "medium":
+                  mediumIssueCount++;
+                  break;
+                case "high":
+                  highIssueCount++;
+                  break;
+                case "critical":
+                  criticalIssueCount++;
+                  break;
+              }
+            }
+  
+            if (data.links.next) {
+              await paginationForGetIssuesCount(
+                data.links.next,
+                orgId,
+                lowIssueCount,
+                mediumIssueCount,
+                highIssueCount,
+                criticalIssueCount
+              );
+            } else {
+              echo(
+                chalk.green(`Organization ID: ${orgId} has the following issues counts`)
+              );
+              echo(chalk.yellow(`Low Issues Counts: ${lowIssueCount}`));
+              echo(chalk.yellow(`Medium Issues Counts: ${mediumIssueCount}`));
+              echo(chalk.yellow(`High Issues Counts: ${highIssueCount}`));
+              echo(chalk.yellow(`Critical Issues Counts: ${criticalIssueCount}`));
+            }
+          }))
+
+         
+        })
+      );
     }
   } catch (error) {
     echo(`Fetch error: ${error.message}`);

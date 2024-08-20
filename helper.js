@@ -38,6 +38,7 @@ export const myCustomArgv = minimist(process.argv.slice(2), {
     "v",
     "get_all_integrations_org",
     "delete_empty_targets",
-    "update_snyk_code_orgs"
+    "update_snyk_code_orgs",
+    "get_all_orgs_issues"
   ],
 });

@@ -1,4 +1,4 @@
-import { echo, fetch, chalk } from "zx";
+import { echo, fetch, chalk, spinner } from "zx";
 import { addIntegrationType, myCustomArgv } from "./helper.js";
 
 export const paginationForGetAllOrgsGroup = async (nextPage, orgIds) => {
@@ -110,11 +110,7 @@ export const paginationForDeleteEmptyTargetsInOrg = async (nextPage, orgId) => {
               const data = await response.json();
 
               if (data.data.length === 0) {
-                echo(
-                  `${chalk.redBright(
-                    target.id
-                  )} is empty. Deleting it...`
-                );
+                echo(`${chalk.redBright(target.id)} is empty. Deleting it...`);
                 //call delete api here
                 try {
                   await fetch(
@@ -130,9 +126,7 @@ export const paginationForDeleteEmptyTargetsInOrg = async (nextPage, orgId) => {
                     .then(async (response) => {
                       if (response.status == 204) {
                         echo(
-                         `${chalk.greenBright(
-                            target.id
-                          )}sucessfully deleted`
+                          `${chalk.greenBright(target.id)}sucessfully deleted`
                         );
                       } else {
                         echo(
@@ -174,5 +168,73 @@ export const paginationForDeleteEmptyTargetsInOrg = async (nextPage, orgId) => {
     return paginationForDeleteEmptyTargetsInOrg(nextPage, orgId);
   } else {
     return null;
+  }
+};
+export const paginationForGetIssuesCount = async (
+  nextPage,
+  orgId,
+  lowIssueCount,
+  mediumIssueCount,
+  highIssueCount,
+  criticalIssueCount
+) => {
+  try {
+    while (nextPage) {
+      const response = await fetch(`https://api.snyk.io${nextPage}`, {
+        method: "GET",
+        headers: {
+          accept: "application/vnd.api+json",
+          authorization: `Token ${myCustomArgv.snyk_token}`,
+        },
+      });
+
+      if (!response.ok) {
+        const errorText = await response.json();
+        echo(
+          chalk.red(
+            `HTTP error! Status: ${response.status}, Response: ${JSON.stringify(
+              errorText
+            )}`
+          )
+        );
+        return;
+      }
+
+      const data = await response.json();
+      const issues = data.data;
+
+      await (spinner(chalk.red(`Calculating number of issues for org ${orgId}`),async()=>{
+        for (const issue of issues) {
+          switch (issue.attributes.effective_severity_level) {
+            case "low":
+              lowIssueCount++;
+              break;
+            case "medium":
+              mediumIssueCount++;
+              break;
+            case "high":
+              highIssueCount++;
+              break;
+            case "critical":
+              criticalIssueCount++;
+              break;
+          }
+        }  
+      }))
+
+     
+      nextPage = data.links.next || null;
+    }
+
+    echo(
+      chalk.green(`Organization ID: ${orgId} has the following issues counts`)
+    );
+    echo(chalk.yellow(`Low Issues Counts: ${lowIssueCount}`));
+    echo(chalk.yellow(`Medium Issues Counts: ${mediumIssueCount}`));
+    echo(chalk.yellow(`High Issues Counts: ${highIssueCount}`));
+    echo(chalk.yellow(`Critical Issues Counts: ${criticalIssueCount}`));
+  } catch (error) {
+    echo(chalk.red(`Fetch error: ${error.message}`));
+    console.error(error);
   }
 };
