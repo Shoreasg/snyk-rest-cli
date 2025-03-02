@@ -1,95 +1,123 @@
-# Note
+# snyk-rest-cli
 
-This is an open-source community project. This code is developed in the open with input from the community through issues and PRs.
+`snyk-rest-cli` is a community-driven open-source CLI tool that helps you interact with Snyk's REST API, offering additional functionalities beyond the API's built-in capabilities.
 
-1. As a community project, all requests, feedback, and issues are managed through Github issues.
-2. Snyk techincal support will not handle cases related to this tool and will redirect you back to this process
-3. Pull Requests are encouraged to submit changes, which the author will review.
-4. This repository is not affiliated with Snyk and its a community side project. Any issues, please look for the author of this repository.
+## ⚠️ Note
 
+This repository is an **open-source community project** in **partnership with Snyk**. Contributions and discussions happen openly through issues and pull requests.
 
-# CLI help
+- All **feedback, issues, and requests** should be managed through **GitHub Issues**.
+- **Snyk technical support will not handle issues** related to this tool and will redirect you here.
+- **Pull requests are encouraged**—the repository author will review submissions.
+- For any questions or issues, please contact the **repository author**.
 
-snyk-rest-cli helps you to call the REST API and provide you functionalities that the REST API doesn't provide.
+For more information about Snyk, visit [Snyk's official site](https://snyk.io/?utm_source=open-source&utm_medium=pg-ptr&utm_campaign=ref-2501-osp&utm_content=pg-cta).
 
-# How to install
+---
 
-`npm i snyk-rest-cli -g`
+## 🚀 Installation
 
-Check if you have install correctly by running:
+Install the CLI globally using npm:
 
-`snyk-rest-cli -v`
+```sh
+npm i snyk-rest-cli -g
+```
 
-# Functions
+Verify the installation:
 
-## GET API  
+```sh
+snyk-rest-cli -v
+```
 
-1. GET all organizations in a group
-2. GET all integrations for all organizations in a group.
-3. GET all issue count for all organizations in a group.
+---
 
-## DELETE API
+## 📌 Features
 
-1. Delete empty targets
+### ✅ GET API  
 
+- Retrieve all organizations in a group.
+- Retrieve all integrations for all organizations in a group.
+- Retrieve issue counts for all organizations in a group.
 
-## How to get started
+### 🗑️ DELETE API
 
-1. Every command requires these 2 flag --snyk_token=<`SnykToken/ServiceToken`> and  --api_version=<`The requested version of the endpoint to process the request`>
-2. Look at the available commands below and add the required flags for the command to work
+- Delete empty targets.
 
-## Available commands
+---
 
-### `snyk-rest-cli --help`
+## 🔧 Getting Started
 
-Give you the list of commands available for this CLI
+All commands require two mandatory flags:
 
-**Note:** The help on the docs site is the same as the `--help` in the CLI.
+- `--snyk_token=<SnykToken/ServiceToken>`  
+- `--api_version=<The requested API version>`
 
-### `snyk-rest-cli -v or --version`
+Refer to the available commands below and include the necessary flags for execution.
 
-Give you the version of the CLI
+---
 
-# `snyk-rest-cli --get_all_orgs_group`
+## 📜 Available Commands
 
-Get all orgs for the specify group.
+### 🔹 General Commands
 
-## Required flags
+#### `snyk-rest-cli --help`
+Displays a list of available commands.
 
-1. `--group_id`: Your group id
+**Note:** The documentation site help is identical to the `--help` command.
 
-# `snyk-rest-cli --get_all_integrations_org`
+#### `snyk-rest-cli -v` or `snyk-rest-cli --version`
+Displays the CLI version.
 
-Get all integrations for all orgs in the specified group.
-## Required flags
+---
 
-1. `--group_id`: Your group id
+### 🔍 Retrieve Data
 
-## optional flags
+#### `snyk-rest-cli --get_all_orgs_group`
+Fetch all organizations in the specified group.
 
-1. `--source_types`: if you want to check if all of the orgs in a group have integrated a certain integration, use this flag. (can only specify 1 type of integration!)
+**Required Flags:**
+- `--group_id`: Your group ID.
 
-# `snyk-rest-cli --delete_empty_targets`
+#### `snyk-rest-cli --get_all_integrations_org`
+Fetch all integrations for all organizations in a specified group.
 
-Get all targets in a group, check if the target is empty, if true, delete it.
+**Required Flags:**
+- `--group_id`: Your group ID.
 
-## Required flags
+**Optional Flags:**
+- `--source_types`: Check if all organizations in the group have integrated a specific integration (only supports one integration type at a time).
 
-1. `--group_id`: Your group id
+#### `snyk-rest-cli --get_all_org_issues`
+Retrieve issue counts for all organizations in a group, categorized by severity.
 
-# `snyk-rest-cli --update_snyk_code_orgs`
+**Required Flags:**
+- `--group_id`: Your group ID.
 
-Get all organizations in a group and check their snyk code settings, set all to enable / disable
+---
 
-## Required flags
+### ⚙️ Modify or Delete Data
 
-1. `--group_id`: Your group id
-2. `--sast_enabled`: Enable / Disable Snyk Code
+#### `snyk-rest-cli --delete_empty_targets`
+Retrieve all targets in a group, check if they are empty, and delete them if true.
 
-# `snyk-rest-cli --get_all_org_issues`
+**Required Flags:**
+- `--group_id`: Your group ID.
 
-Get all issues counts for all organizations in a group for all severity.
+#### `snyk-rest-cli --update_snyk_code_orgs`
+Fetch all organizations in a group, check their Snyk Code settings, and enable/disable as required.
 
-## Required flags
+**Required Flags:**
+- `--group_id`: Your group ID.
+- `--sast_enabled`: Enable or disable Snyk Code.
 
-1. `--group_id`: Your group id
+---
+
+## 📢 Contributing
+
+We welcome contributions! If you'd like to submit changes:
+
+1. Fork the repository.
+2. Create a new branch for your feature or bug fix.
+3. Submit a pull request.
+
+For discussions, open an issue in the repository.

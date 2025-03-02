@@ -118,6 +118,9 @@ const renderer = {
     // Ignore images by returning an empty string
     return '';
   },
+  hr(){
+    return '\n' + chalk.gray('-'.repeat(getIdealTextWidth())) + '\n\n';
+  }
 };
 
 marked.use({ renderer });
