@@ -13,6 +13,9 @@ This repository is an **open-source community project** in **partnership with Sn
 
 For more information about Snyk, visit [Snyk's official site](https://snyk.io/?utm_source=open-source&utm_medium=pg-ptr&utm_campaign=ref-2501-osp&utm_content=pg-cta).
 
+![image](https://github.com/user-attachments/assets/63e130da-dea8-4254-ac47-cc9873be0b53)
+
+
 ---
 
 ## 🚀 Installation
