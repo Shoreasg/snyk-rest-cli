@@ -19,7 +19,7 @@ const cliVersion = "5.0.2";
     deleteEmptyTargets();
   } else if (myCustomArgv.update_snyk_code_orgs){
     updateSnykCode();
-  } else if (myCustomArgv.get_all_org_issues){
+  } else if (myCustomArgv.get_all_orgs_issues){
     getIssuesCount();
   }
    else {
