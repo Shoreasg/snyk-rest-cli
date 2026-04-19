@@ -90,7 +90,7 @@ Fetch all integrations for all organizations in a specified group.
 **Optional Flags:**
 - `--source_types`: Check if all organizations in the group have integrated a specific integration (only supports one integration type at a time).
 
-#### `snyk-rest-cli --get_all_org_issues`
+#### `snyk-rest-cli --get_all_orgs_issues`
 Retrieve issue counts for all organizations in a group, categorized by severity.
 
 **Required Flags:**
