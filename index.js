@@ -1,9 +1,11 @@
 #!/usr/bin/env node
+import { createRequire } from "node:module";
 import { echo } from "zx";
 import { myCustomArgv, readHelp } from "./helper.js";
 import { deleteEmptyTargets, getAllIntegrationsInOrg, getAllOrgsGroup, getIssuesCount, updateSnykCode } from "./api.js";
 
-const cliVersion = "5.0.2";
+const require = createRequire(import.meta.url);
+const { version: cliVersion } = require("./package.json");
 
 
 (async () => {
